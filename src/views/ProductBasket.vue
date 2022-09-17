@@ -1,4 +1,4 @@
 <script setup lang="ts"></script>
 <template>
-    Product List
+  <h1>Basket</h1>
 </template>

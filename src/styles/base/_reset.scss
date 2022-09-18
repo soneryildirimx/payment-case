@@ -82,6 +82,7 @@ video {
 
 body {
   line-height: 1;
+  background-color: $background;
 }
 
 article,
@@ -175,4 +176,8 @@ optgroup,
 select,
 textarea {
   font-family: inherit;
+}
+
+img {
+  max-width: 100%;
 }

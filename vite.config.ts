@@ -9,13 +9,14 @@ export default defineConfig({
     },
   },
   plugins: [vue()],
-  // css: {
-  //   preprocessorOptions: {
-  //     scss: {
-  //       additionalData: `
-  //         @import "@/styles/main.scss";
-  //       `
-  //     }
-  //   }
-  // }
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+          @import "@/styles/base/variable.scss";
+          @import "@/styles/base/mixin.scss";
+        `,
+      },
+    },
+  },
 })

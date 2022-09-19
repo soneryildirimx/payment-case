@@ -1,7 +1,33 @@
 <script setup lang="ts">
   import BasketItem from '@/components/BasketItem.vue'
   import { useStore } from '@/store'
+  import { notify } from 'vue3-notify'
   const store = useStore()
+
+  const order = () => {
+    store.loading = true
+    store
+      .orderBasket()
+      .then((response: any) => {
+        notify({
+          title: response.title,
+          text: response.text,
+          duration: 4000,
+          type: 'success',
+        })
+      })
+      .catch((error: any) => {
+        notify({
+          title: error.title,
+          text: error.text,
+          duration: 4000,
+          type: 'error',
+        })
+      })
+      .finally(() => {
+        store.loading = false
+      })
+  }
 </script>
 <template>
   <div class="basket">
@@ -32,7 +58,7 @@
         <button class="fill" @click="$router.push({ name: 'List' })">
           Continue Shopping
         </button>
-        <button @click="store.orderBasket">Place Order</button>
+        <button @click="order">Place Order</button>
       </div>
     </div>
   </div>

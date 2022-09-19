@@ -9,6 +9,9 @@
   })
 </script>
 <template>
+  <div class="product-header">
+    <h5>Product List</h5>
+  </div>
   <div class="product-list">
     <div
       v-for="product in store.products"
@@ -21,6 +24,10 @@
 </template>
 
 <style lang="scss" scoped>
+  .product-header {
+    text-align: center;
+    padding: 2rem 0;
+  }
   .product-list {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

@@ -1,16 +1,9 @@
 <script setup lang="ts">
   import { Product, useStore } from '@/store'
-  import { useRouter } from 'vue-router'
-  const router = useRouter()
   const store = useStore()
   const props = defineProps<{
     product: Product
   }>()
-  const addBasket = (id: number) => {
-    store.addBasket(id).then(() => {
-      router.push({ name: 'Basket' })
-    })
-  }
 </script>
 <template>
   <div class="product">
@@ -20,7 +13,7 @@
     </figure>
     <div class="product-footer">
       <h6>{{ props.product.price }} {{ props.product.currency }}</h6>
-      <button @click="addBasket(props.product.id)">Add Basket</button>
+      <button @click="store.addBasket(props.product.id)">Add Basket</button>
     </div>
   </div>
 </template>

@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
-import { notify } from 'vue3-notify'
 
 export type Product = {
   id: number
@@ -50,7 +49,6 @@ export const useStore = defineStore('main', {
         })
     },
     async orderBasket() {
-      this.loading = true
       const data = this.basket.map((item) => {
         return {
           id: item.id,
@@ -65,38 +63,32 @@ export const useStore = defineStore('main', {
         body: JSON.stringify(data),
       })
       const body = await response.json()
-      if (body.status != 'error') {
-        notify({
-          title: body.message.charAt(0).toUpperCase() + body.message.slice(1),
-          text: 'Your order has been successfully completed.',
-          duration: 4000,
-          type: 'success',
-        })
-        this.basket = []
-        this.loading = false
-        return
-      }
-      const product = this.basket.find((item) => item.id === 3)
-      notify({
-        title: body.message.charAt(0).toUpperCase() + body.message.slice(1),
-        text: `The product named "${product?.name}" is out of stock`,
-        duration: 4000,
-        type: 'error',
-      })
-      this.loading = false
-    },
-    addBasket(id: number): Promise<string> {
       return new Promise((resolve, reject) => {
-        try {
-          const product: any = this.products.find((item) => item.id === id)
-          product.quantity = 1
-          this.basket.push(product)
-          this.router.push('/basket')
-          resolve('Done')
-        } catch (error) {
-          reject('Error')
+        if (body.status != 'error') {
+          this.basket = []
+          resolve({
+            title: body.message.charAt(0).toUpperCase() + body.message.slice(1),
+            text: 'Your order has been successfully completed.',
+          })
         }
+        const product = this.basket.find((item) => item.id === 3)
+        reject({
+          title: body.message.charAt(0).toUpperCase() + body.message.slice(1),
+          text: `The product named "${product?.name}" is out of stock`,
+        })
       })
+    },
+    addBasket(id: number) {
+      const basketItem = this.basket.find((item) => item.id === id)
+      if (basketItem) {
+        basketItem.quantity++
+      } else {
+        let product: any = this.products.find((item) => item.id === id)
+        product = { ...product, quantity: 1 }
+        this.basket.push(product)
+      }
+
+      this.router.push({ name: 'Basket' })
     },
     removeBasket(id: number) {
       this.basket = this.basket.filter((item) => item.id != id)

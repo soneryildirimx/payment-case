@@ -17,6 +17,10 @@ const routes: RouteRecordRaw[] = [
     name: 'Basket',
     component: () => import('@/views/ProductBasket.vue'),
   },
+  {
+    path: '/:catchAll(.*)',
+    redirect: '/product-list',
+  },
 ]
 
 const router = createRouter({
